@@ -19,6 +19,7 @@ class CD_Admin
         add_action('admin_menu', array(__CLASS__, 'add_menu'));
         add_action('admin_init', array(__CLASS__, 'register_settings'));
         add_action('admin_enqueue_scripts', array(__CLASS__, 'enqueue_admin_scripts'));
+        add_action('wp_ajax_cd_toggle_approval', array(__CLASS__, 'handle_toggle_approval'));
     }
 
     public static function add_menu()
@@ -81,17 +82,29 @@ class CD_Admin
                 <th><?php _e('City', CD_TEXT_DOMAIN); ?></th>
                 <th><?php _e('Education', CD_TEXT_DOMAIN); ?></th>
                 <th><?php _e('Occupation', CD_TEXT_DOMAIN); ?></th>
+                <th><?php _e('Status', CD_TEXT_DOMAIN); ?></th>
                 <th><?php _e('Actions', CD_TEXT_DOMAIN); ?></th>
             </tr>
         </thead>
         <tbody>
             <?php while ($query->have_posts()) : $query->the_post(); ?>
-            <?php $head_details = get_post_meta(get_the_ID(), 'cd_head_details', true); ?>
+            <?php
+                        $head_details = get_post_meta(get_the_ID(), 'cd_head_details', true);
+                        $approved = get_post_meta(get_the_ID(), 'cd_approved', true);
+                        ?>
             <tr>
                 <td><?php echo esc_html($head_details['name'] ?? ''); ?></td>
                 <td><?php echo esc_html($head_details['city'] ?? ''); ?></td>
                 <td><?php echo esc_html($head_details['education'] ?? ''); ?></td>
                 <td><?php echo esc_html($head_details['occupation_type'] ?? ''); ?></td>
+                <td>
+                    <label class="cd-toggle">
+                        <input type="checkbox" class="cd-approval-toggle" data-post-id="<?php echo get_the_ID(); ?>"
+                            <?php checked($approved, '1'); ?>>
+                        <span class="slider"></span>
+                    </label>
+                    <span class="cd-status-text"><?php echo $approved === '1' ? 'Approved' : 'Pending'; ?></span>
+                </td>
                 <td>
                     <a href="<?php echo admin_url('post.php?post=' . get_the_ID() . '&action=edit'); ?>"
                         class="button"><?php _e('Edit', CD_TEXT_DOMAIN); ?></a>

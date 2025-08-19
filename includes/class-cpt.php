@@ -69,6 +69,8 @@ class CD_CPT
             value="<?php echo esc_attr($head_details['email'] ?? ''); ?>" class="widefat"></label></p>
 <p><label><?php _e('Full Address', CD_TEXT_DOMAIN); ?>: <textarea name="cd_head_details[address]" class="widefat"
             required><?php echo esc_textarea($head_details['address'] ?? ''); ?></textarea></label></p>
+<p><label><?php _e('City', CD_TEXT_DOMAIN); ?>: <input type="text" name="cd_head_details[city]"
+            value="<?php echo esc_attr($head_details['city'] ?? ''); ?>" class="widefat" required></label></p>
 <p><label><?php _e('Education', CD_TEXT_DOMAIN); ?>:
         <select name="cd_head_details[education]" class="widefat" required>
             <option value=""><?php _e('Select Education', CD_TEXT_DOMAIN); ?></option>
